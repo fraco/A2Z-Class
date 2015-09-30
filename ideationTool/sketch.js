@@ -13,17 +13,20 @@ var numObjs;
 
 var rs;
 var contentTokens 
-var nouns = [];
-var adjs = [];
-var verbs = [];
-var advs = [];
+var nouns = []; var posNouns = [];
+var adjs = []; var posAdjs = [];
+var verbs = []; var posVerbs = [];
+var advs = []; var posAdvs = [];
+
+//usuallt add text file of ignnored words
+var ignoreList = {
+	"in": true,
+	"and": true,
+}
 
 function preload() {
-  //data = loadJSON('testdata.json');  
-  //data = loadJSON('https://api.collection.cooperhewitt.org/rest/?method=api.spec.formats&access_token=tNo&page=1&per_page=100');
+  //data = loadJSON('testdata.json');    
   data = loadJSON('https://api.collection.cooperhewitt.org/rest/?method=cooperhewitt.objects.tags.getObjects&access_token='+tNo+'&query=3d&page=1&per_page=100')
-
-
 }
 
 function setup() {
@@ -82,34 +85,37 @@ function process() {
 
   contentTokens = RiTa.tokenize(rs._features.tokens);
 
+  var posTokens = rs.get('pos').split(' ');
+
   var lexicon = new RiLexicon();
+
+  console.log(posTokens);
+  console.log(contentTokens);
 
   for (var i = 0; i < contentTokens.length; i++ ){
 
-  	if(lexicon.isNoun(contentTokens[i]) 
-  		&& contentTokens[i] != 'in' 
-  		&& contentTokens[i] != 'and'
-  		&& contentTokens[i] != 'that'){
-  		nouns.push(contentTokens[i]);
-  	}
-  	if(lexicon.isAdjective(contentTokens[i]) 
-  		&& contentTokens[i] != 'in' 
-  		&& contentTokens[i] != 'and'
-  		&& contentTokens[i] != 'that'){
-  		adjs.push(contentTokens[i]);
-  	}
-  	if(lexicon.isVerb(contentTokens[i]) 
-  		&& contentTokens[i] != 'in' 
-  		&& contentTokens[i] != 'and'
-  		&& contentTokens[i] != 'that'){
-  		verbs.push(contentTokens[i]);
-  	}
-  	if(lexicon.isAdverb(contentTokens[i]) 
-  		&& contentTokens[i] != 'in' 
-  		&& contentTokens[i] != 'and'
-  		&& contentTokens[i] != 'that'){
-  		advs.push(contentTokens[i]);
-  	}
+  	if (ignoreList[contentTokens[i]]) {
+  		// do nothing 
+  	} else {
+
+  		if (/^nn/.test(posTokens[i])) {
+  		// if (posTokens[i] == 'nn' || posTokens[i] == 'nns') {
+	  	  nouns.push(contentTokens[i]);
+	  	  posNouns.push(posTokens[i]);
+  		}
+  		if (/^jj/.test(posTokens[i])){
+  			adjs.push(contentTokens[i]);
+  			posAdjs.push(posTokens[i]);
+  		}
+  		if (/^vb/.test(posTokens[i])){
+  			verbs.push(contentTokens[i]);
+  			posVerbs.push(posTokens[i]);
+  		}
+  		if (/^rb/.test(posTokens[i])){
+  			advs.push(contentTokens[i]);
+  			posAdvs.push(posTokens[i]);
+  		}
+    }
  
   }
 
