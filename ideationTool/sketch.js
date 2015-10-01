@@ -15,7 +15,7 @@ var rs;
 var contentTokens 
 var nouns = []; var posNouns = [];
 var adjs = []; var posAdjs = [];
-var verbs = []; var posVerbs = [];
+var verbs = []; var posVerbs = []; var contentVbz = []; var posVbz = [];
 var advs = []; var posAdvs = [];
 
 //usuallt add text file of ignnored words
@@ -57,7 +57,8 @@ function setup() {
   	// Make an h2 element
   	greeting = createElement('h2', 'Object from Cooper Hewit API tagged with 3D');
   	// Make a text input field
-  	input = createInput(describedObjects[int(random(numObjs))]);
+  	// input = createInput(describedObjects[int(random(numObjs))]);
+  	input = createInput(describedObjects[42]);
   	input.size(400);
   	// Make a submit button
   	button = createButton('submit');
@@ -97,23 +98,36 @@ function process() {
   		// do nothing 
   	} else {
 
+  		//all nouns
   		if (/^nn/.test(posTokens[i])) {
   		// if (posTokens[i] == 'nn' || posTokens[i] == 'nns') {
 	  	  nouns.push(contentTokens[i]);
 	  	  posNouns.push(posTokens[i]);
   		}
+  		//all adjectives
   		if (/^jj/.test(posTokens[i])){
   			adjs.push(contentTokens[i]);
   			posAdjs.push(posTokens[i]);
   		}
+  		//all verbs
   		if (/^vb/.test(posTokens[i])){
   			verbs.push(contentTokens[i]);
   			posVerbs.push(posTokens[i]);
+  			if (posTokens[i] == 'vbz'){
+  				contentVbz.push(contentTokens[i]);
+  				posVbz.push(posTokens[i]);
+  			}
   		}
+  		//all adverbs
   		if (/^rb/.test(posTokens[i])){
   			advs.push(contentTokens[i]);
   			posAdvs.push(posTokens[i]);
   		}
+  		//all prepositions or subordinating conjunction
+  		if (posTokens[i] == 'in' || posTokens[i] == 'cc'){
+
+  		}
+
     }
  
   }
