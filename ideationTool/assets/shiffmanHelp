@@ -12,13 +12,13 @@ function setup() {
   // println(data.objects)
   for(i = 0; i < data.objects.length; i++){
 
-	if(data.objects[i].description != null || data.objects[i].gallery_text != null){
+	if(data.objects[i].description != null){
 
 		if (existingDescriptions[data.objects[i].description] === true) {
 
 		} else {
 			describedObjects.push(data.objects[i]); //objects’ index of JSON, id, text
-			existingDescriptions[data.objects[i].description] = true;			
+			existingDescriptions[data.objects[i].description] = true;
 		}
 		//repeatedDescription.push(data.objects[i].description);
 	}

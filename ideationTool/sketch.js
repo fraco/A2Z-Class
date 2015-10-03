@@ -1,7 +1,6 @@
 var galleryTextedObjects = [];
 
 var data;
-var repeatedDescription = [];
 var describedObjects = [];
 var tNo = '2bc798650125e219377b21f6cfdf5bd5';
 
@@ -15,10 +14,15 @@ var rs;
 var contentTokens 
 var nouns = []; var posNouns = [];
 var adjs = []; var posAdjs = [];
-var verbs = []; var posVerbs = []; var contentVbz = []; var posVbz = [];
+
+var verbs = []; var posVerbs = []; var contentVbz = []; var posVbz = []; 
+var vbd = []; existingVbd = []; var delDs = [];
+var silentEsList; var stEs; var vrs;
+var conjVbz = [];
+
 var advs = []; var posAdvs = [];
 
-//usuallt add text file of ignnored words
+//usually add text file of ignnored words
 var ignoreList = {
 	"in": true,
 	"and": true,
@@ -26,7 +30,9 @@ var ignoreList = {
 
 function preload() {
   //data = loadJSON('testdata.json');    
-  data = loadJSON('https://api.collection.cooperhewitt.org/rest/?method=cooperhewitt.objects.tags.getObjects&access_token='+tNo+'&query=3d&page=1&per_page=100')
+  data = loadJSON('https://api.collection.cooperhewitt.org/rest/?method=cooperhewitt.objects.tags.getObjects&access_token='+tNo+'&query=3d&page=1&per_page=100');
+  stEs = loadStrings('assets/silentEs.txt');
+  // stEs = silentEsList.toLowerCase();
 }
 
 function setup() {
@@ -40,16 +46,9 @@ function setup() {
 
 			} else {
 				describedObjects.push(data.objects[i].description); //objects’ index of JSON, id, text
-				// existingDescriptions[data.objects[i].description] = true;
-				// // if (existingDescriptions[i] = true){
-				// 	descriptions.push(existingDescriptions[i]);
-				// // }	
 			}				
 			
 		}
-		// if(data.objects[i].description == 'Sixty-eight blocks used for printing the textile "Flowers after Van Huysum," designed by Harry Wearne. The textile was printed by Stead McAlpin and Company Limited, Cummersdale near Carlisle, England. Although printed in England, the design was confined to the American market and did not become available worldwide until 1949. The minimum unit of the completed pattern would have been forty-two inches high and seventeen inches wide and would repeat as a half-drop pattern.'){
-		// 	repeatedDescription.push(data.objects[i].id);
-		// }
 	}
 
 	numObjs = describedObjects.length;
@@ -63,34 +62,38 @@ function setup() {
   	// Make a submit button
   	button = createButton('submit');
  	 // Here a button triggers the "hello message"
-  	button.mousePressed(process);
-  	
+ 	 button.mousePressed(process);
+
   	// change input button ∆Console: Uncaught TypeError: fxn.bind is not a function
   	// buttonIn = createButton('change In');
   	// button.mousePressed(int(random(numObjs)));
 
-}
+  }
 
-function draw() {
+  function draw() {
   // background(0);
 
 }
 
 function process() {
-  var sentence = input.value();
-  rs = new RiString(sentence);
-  
+	var sentence = input.value();
+	rs = new RiString(sentence);
+	vrs = new RiString(stEs);
+
   // createP("Parts of object's description: " + rs.get('pos'));
   console.log(rs.get('pos'));
+  console.log(vrs.get('pos'));
 
   contentTokens = RiTa.tokenize(rs._features.tokens);
+  silentEsTokens = RiTa.tokenize(vrs._features.tokens);
 
   var posTokens = rs.get('pos').split(' ');
+  var posStEs = rs.get('pos');
 
   var lexicon = new RiLexicon();
 
-  console.log(posTokens);
-  console.log(contentTokens);
+  // console.log(posTokens);
+  // console.log(contentTokens);
 
   for (var i = 0; i < contentTokens.length; i++ ){
 
@@ -101,8 +104,8 @@ function process() {
   		//all nouns
   		if (/^nn/.test(posTokens[i])) {
   		// if (posTokens[i] == 'nn' || posTokens[i] == 'nns') {
-	  	  nouns.push(contentTokens[i]);
-	  	  posNouns.push(posTokens[i]);
+  			nouns.push(contentTokens[i]);
+  			posNouns.push(posTokens[i]);
   		}
   		//all adjectives
   		if (/^jj/.test(posTokens[i])){
@@ -117,6 +120,32 @@ function process() {
   				contentVbz.push(contentTokens[i]);
   				posVbz.push(posTokens[i]);
   			}
+  			//past tense verbs 
+  			if (/ed\b/.test(contentTokens[i])){ 
+  				if(existingVbd === true){
+  					//do nothing (NOT working)
+  				} else {			
+  					vbd.push(contentTokens[i]);  				
+  				}
+  				if(vbd[i]>0){ //can a callback be avoided through a conditional where the array has stop "filling" (push has stopped?)
+	  				//DELETE all Ds  				
+	  				// delDs.push(vbd[0].replace(/d$/, ''));
+	  				// delDs.push(vbd[i].replace(/d$/, ''));
+	  				delDs.push(vbdD);
+
+	  				// console.log(delDs);
+	  				//loop through the stEs string array
+		  				//if silent e == true (delDs[i] matches all words stEs[i])
+		  					//ADD s
+		  				//else DELETE Es 
+			  				//if ENDS (SS,X,CH,SH,O)
+			  					//ADD es
+			  				//else if ENDS (Consonant + Y)
+			  					//DELETE y ADD ies
+			  				//else ADD s
+	  				}	
+	  			}
+  			//
   		}
   		//all adverbs
   		if (/^rb/.test(posTokens[i])){
@@ -128,13 +157,30 @@ function process() {
 
   		}
 
-    }
- 
+  	}
+
+  	var args = {
+  		tense: RiTa.PRESENT_TENSE,
+  		number: RiTa.SINGULAR,
+  		person: RiTa.THIRD_PERSON
+  	};
+  	conjVbz = RiTa.conjugate(verbs[2],args)
+  	// conjVbz.push(RiTa.conjugate(verbs[i],args));
+
   }
 
+  // delDs = vbd[i].replace(/d\b/gmi, '');
+
   createP('This could be a '+	adjs[int(random(adjs.length))]+ ' ' +
-							  	nouns[int(random(nouns.length))]+' that '+
-							  	verbs[int(random(verbs.length))]);
+  	nouns[int(random(nouns.length))]+' that '+
+  	verbs[int(random(verbs.length))]);
 
   //var par = createP('hello '+ name + '!');
+}
+
+function deleteDsVb(vbdD){
+	setTimeOut(delDs, 10);
+	function deleteDs(){
+	vbd[0].substring(0, str.length - 1);
+	}
 }
