@@ -1,0 +1,74 @@
+{
+	"object": {
+		"id": "51589573",
+		"tms:id": "275583",
+		"accession_number": "2013-31-2",
+		"title": "LCD Television, 2003",
+		"title_raw": "LCD",
+		"url": "https://collection.cooperhewitt.org/objects/51589573/",
+		"department_id": "35347497",
+		"period_id": null,
+		"media_id": "51681295",
+		"type_id": "35252295",
+		"date": null,
+		"year_start": "2003",
+		"year_end": "2003",
+		"year_acquired": null,
+		"decade": null,
+		"woe:country_id": "23424856",
+		"medium": "polycarbonate, abs plastic, lcd (liquid crystal display)",
+		"markings": null,
+		"signed": null,
+		"inscribed": null,
+		"provenance": null,
+		"dimensions": null,
+		"dimensions_raw": null,
+		"creditline": null,
+		"description": null,
+  		"justification": "As a young industrial designer in the 1980s, Naoto Fukasawa made a point of traveling to Akihabara, Japan, a town full of appliance and consumer electronics stores. There, he was able to study a broad range of manufacturers' appliances and electronics to get a sense of product types, explore advances in materials and technologies, compare functions and stylistic trends, and become acquainted with the work of other designers. This helped him as he developed his design philosophy, particularly the importance he places on the relationship between the user and the object. \nTelevisions seem to be particularly telling for Fukasawa. He observed that, “Of all electronic devices, the evolution of the television is significant; it’s synonymous with high-tech products and is one of the most popular products.”[1] Although CRT (cathode ray tube) technology in televisions has been largely replaced by flat screen LCD (liquid crystal display) technology, Fukasawa still finds the CRT shape attractive, “like a big square light bulb.”[2] Fukasawa’s, portable LCD television for Plus Minus Zero is shaped like an old CRT television set. This is ironic, since designing television housing shaped like this—fitting snuggly around an actual CRT—would have been impossible with CRT technology. The housing can only be designed in the CRT shape because it incorporates an LCD flat screen. LCD technology first developed in the early 20th century, but only became commercially viable in the mid-1990s; at which point it took off, particularly for use in laptop computers, flat panel computer screens, and large flat screen televisions. Fukasawa thinks of this miniature design as friendly, particularly suited for a kitchen, above a bed or in other personal space, as it is easily portable for use in any room. The form is produced in red, white, or black, with a discreet row of control buttons in the same color along the top of the housing. The television is supplemented by a remote control and wireless transmitter.\nAt the time of proposed acquisition, the museum’s collection includes a group of televisions that document design evolution in the mid-20th century. The group includes a Wegavision 3000 (ca. 1960), a Philco Predicta set (1959), and a Sony model TV 8 301 portable television (1965). Fukasawa’s LCD television, with its visual reference to old CRT technology, offers an interesting update of audio visual technology and style for this subset of the museum’s industrial design collection.\nSources:\n[1] Naoto Fukasawa, Naoto Fukasawa (London: Phaidon, 2007), 75.\n[2] Ibid, 72.",
+		"gallery_text": null,
+		"label_text": null,
+		"videos": null,
+		"on_display": null,
+		"woe:country": "23424856",
+		"is_loan_object": 0
+	},
+	"tags": [
+		{
+			"name": "appliance",
+			"count_objects": "16",
+			"id": "68797045"
+		},
+		{
+			"name": "rounded",
+			"count_objects": "108",
+			"id": "68797135"
+		},
+		{
+			"name": "entertainment",
+			"count_objects": "47",
+			"id": "68797217"
+		},
+		{
+			"name": "technology",
+			"count_objects": "26",
+			"id": "68798291"
+		},
+		{
+			"name": "rectangular",
+			"count_objects": "56",
+			"id": "68798445"
+		},
+		{
+			"name": "buttons",
+			"count_objects": "16",
+			"id": "68799183"
+		},
+		{
+			"name": "black plastic",
+			"count_objects": "17",
+			"id": "68802231"
+		}
+	],
+	"stat": "ok"
+}
