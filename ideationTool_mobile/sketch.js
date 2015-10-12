@@ -1,4 +1,5 @@
 
+//  http://bit.ly/1L7RtlW
 var galleryTextedObjects = [];
 
 var data;
@@ -14,14 +15,14 @@ var existingDescriptions = [];
 var numObjs;
 //RiTa related variables
 var rs;
-var contentTokens 
+var contentTokens; var posTokens; 
 var nouns = []; var posNouns = [];
 var adjs = []; var posAdjs = [];
 //verb related variables
 var verbs = []; var posVerbs = []; var contentVbz = []; var posVbz = []; 
 var vbd = []; existingVbd = []; var delDs = [];
 var silentEsList; var stEs; var vrs;
-var conjVbz = [];
+var conjVbz = []; var vbz = [];
 
 var advs = []; var posAdvs = [];
 
@@ -53,8 +54,7 @@ function setup() {
 
       } else {
         describedObjects.push(data.objects[i]); //objects’ index of JSON, id, text
-      }       
-      
+      }      
     }
   }
 
@@ -68,15 +68,8 @@ function setup() {
   };
 
   for (j = 0; j < inPhrase.length; j++) {addedDescrips += inPhrase[j]}
-
-  // chObj = describedObjects[floor(random(numObjs))];
-  // inPhrase = chObj.description;
-  // objImgUrl = chObj.images[0].sq.url;
-  // objImg = loadImage(objImgUrl);
-
-  // Make a submit button
-  button = createButton('submit');
-  // Here a button triggers the "hello message"
+  
+  button = createButton('submit');  
   button.mousePressed(process);
 
 }
@@ -98,40 +91,50 @@ function draw() {
       inPhrase.push(chObj[i].description);
       objImgUrl.push(chObj[i].images[0].sq.url);
       objImg.push(loadImage(objImgUrl[i]));
-      addedDescrips += inPhrase[i];
-    }
-    // addedDescrips += inPhrase[0]+inPhrase[1]+inPhrase[2];
-    // chObj = describedObjects[floor(random(numObjs))];
-    // inPhrase = chObj.description;
-    // objImgUrl = chObj.images[0].sq.url;
-    // objImg = loadImage(objImgUrl);    
+
+      chObj.shift();
+      inPhrase.shift();
+      objImgUrl.shift();
+      objImg.shift();     
+    }   
   }
+
+   for(var i = 0; i < 3; i++){
+    image(objImg[i], i*310, 10);
+  }
+
+}
+
+function keyReleased() {
+  if (inPhrase.length === 3) {
+    addedDescrips = 0;
+    for (j = 0; j < inPhrase.length; j++) {addedDescrips += inPhrase[j]}
+  } 
+  return false; // prevent any default behavior
 }
 
 function process() {
 
-  var sentence = addedDescrips;
+  var lowerSentence = addedDescrips.toLowerCase();
+  var sentence = lowerSentence;
 
   console.log(sentence);
   rs = new RiString(sentence);
   vrs = new RiString(stEs);
 
   console.log(rs.get('pos'));
-  console.log(vrs.get('pos'));
+  // console.log(vrs.get('pos'));
 
   contentTokens = RiTa.tokenize(rs._features.tokens);
-  silentEsTokens = RiTa.tokenize(vrs._features.tokens);
+  
+  // silentEsTokens = RiTa.tokenize(vrs._features.tokens);
+  var repeatedTokens;
 
-  var posTokens = rs.get('pos').split(' ');
-  var posStEs = vrs.get('pos');
+  posTokens = rs.get('pos').split(' ');
+  // posStEs = vrs.get('pos');
 
-  var lexicon = new RiLexicon();
 
   for (var i = 0; i < contentTokens.length; i++ ){
-
-    if (ignoreList[contentTokens[i]]) {
-      // do nothing 
-    } else {
 
       //all nouns
       if (/^nn/.test(posTokens[i])) {
@@ -167,7 +170,6 @@ function process() {
             //DELETE all Ds         
             // delDs.push(vbd[0].replace(/d$/, ''));
             // delDs.push(vbd[i].replace(/d$/, ''));
-
           }
         //
       }
@@ -178,19 +180,16 @@ function process() {
       }
       //all prepositions or subordinating conjunction
       if (posTokens[i] == 'in' || posTokens[i] == 'cc'){
-
-      }
-
-    }
+      }    
 
     var args = {
       tense: RiTa.PRESENT_TENSE,
       number: RiTa.SINGULAR,
       person: RiTa.THIRD_PERSON
     };
-    conjVbz = RiTa.conjugate(verbs[2],args)
-    // conjVbz.push(RiTa.conjugate(verbs[i],args));
-
+    // conjVbz = RiTa.conjugate(verbs[2],args)
+    conjVbz.push(RiTa.conjugate(verbs[i],args));
+    vbz = contentVbz.concat(conjVbz);
   }
 
   // delDs = vbd[i].replace(/d\b/gmi, '');
@@ -198,4 +197,6 @@ function process() {
   createP('This could be a '+ adjs[int(random(adjs.length))]+ ' ' +
     nouns[int(random(nouns.length))]+' that '+
     verbs[int(random(verbs.length))]);
+    // vbz[int(random(vbz.length))]);
 }
+
