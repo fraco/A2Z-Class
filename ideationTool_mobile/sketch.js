@@ -12,9 +12,10 @@ var objImgUrl = [];
 
 var existingDescriptions = [];
 
+
 var numObjs;
 //RiTa related variables
-var rs;
+var rs; var doPos = true;
 var contentTokens; var posTokens; 
 var nouns = []; var posNouns = [];
 var adjs = []; var posAdjs = [];
@@ -61,14 +62,15 @@ function setup() {
   numObjs = describedObjects.length;
 
   for (var i = 0; i < 3; i++) {
-    chObj.push(describedObjects[floor(random(numObjs))]);
-    inPhrase.push(chObj[i].description);
-    objImgUrl.push(chObj[i].images[0].sq.url);
-    objImg.push(loadImage(objImgUrl[i]));    
+      var index = floor(random(numObjs));
+      var obj = describedObjects[index];
+      obj.img = loadImage(obj.images[0].sq.url);
+      chObj.push(obj);
+     
   };
 
-  for (j = 0; j < inPhrase.length; j++) {addedDescrips += inPhrase[j]}
-  
+  for (j = 0; j < chObj.length; j++) {addedDescrips += chObj[j].description}
+
   button = createButton('submit');  
   button.mousePressed(process);
 
@@ -77,38 +79,38 @@ function setup() {
 function draw() {
   // background(0,120);
   for(var i = 0; i < 3; i++){
-    image(objImg[i], i*310, 10);
+    // console.log(chObj[i].img);
+    if (chObj[i].img.width !== 1) {
+      image(chObj[i].img, i*310, 10);
+    }
   }
 
   if(keyIsPressed === true){
-    nouns.length = 0; posNouns.length = 0;
-    verbs.length = 0; posVerbs.length = 0;
-    adjs.length = 0; posAdjs.length = 0;
-    advs.length = 0; posAdvs.length = 0;
+
+    //nouns = [];
+
+    nouns = []; posNouns = [];
+    verbs = []; posVerbs = [];
+    adjs = []; posAdjs = [];
+    advs = []; posAdvs = [];
 
     for (var i = 0; i < 3; i++) {
-      chObj.push(describedObjects[floor(random(numObjs))]);
-      inPhrase.push(chObj[i].description);
-      objImgUrl.push(chObj[i].images[0].sq.url);
-      objImg.push(loadImage(objImgUrl[i]));
+      var index = floor(random(numObjs));
+      var obj = describedObjects[index];
+      obj.img = loadImage(obj.images[0].sq.url);
+      chObj.push(obj);
 
-      chObj.shift();
-      inPhrase.shift();
-      objImgUrl.shift();
-      objImg.shift();     
-    }   
+      chObj.shift();    
+    }
+    for (j = 0; j < chObj.length; j++) {addedDescrips += chObj[j].description}
   }
-
-   for(var i = 0; i < 3; i++){
-    image(objImg[i], i*310, 10);
-  }
-
 }
 
 function keyReleased() {
   if (inPhrase.length === 3) {
     addedDescrips = 0;
     for (j = 0; j < inPhrase.length; j++) {addedDescrips += inPhrase[j]}
+    doPos = true;
   } 
   return false; // prevent any default behavior
 }
@@ -122,6 +124,7 @@ function process() {
   rs = new RiString(sentence);
   vrs = new RiString(stEs);
 
+if(doPos){
   console.log(rs.get('pos'));
   // console.log(vrs.get('pos'));
 
@@ -133,9 +136,10 @@ function process() {
   posTokens = rs.get('pos').split(' ');
   // posStEs = vrs.get('pos');
 
-
   for (var i = 0; i < contentTokens.length; i++ ){
-
+    if (ignoreList[contentTokens[i]]) {
+      // do nothing 
+    } else {
       //all nouns
       if (/^nn/.test(posTokens[i])) {
       // if (posTokens[i] == 'nn' || posTokens[i] == 'nns') {
@@ -161,8 +165,11 @@ function process() {
             //do nothing (NOT working)
           } else {      
             vbd.push(contentTokens[i]);
+            var fixed = contentTokens[i].replace(/d$/,'');
+            delDs.push(fixed);
+            //use substring
             // for (var j = 0; j < vbd.length; i++){
-              delDs = vbd[i];
+              //delDs = vbd[i];
               // delDs.replace(/d$/, " ");  
             // // delDs[i].replace(/d$/gi, '');
             // }      
@@ -182,18 +189,22 @@ function process() {
       if (posTokens[i] == 'in' || posTokens[i] == 'cc'){
       }    
 
-    var args = {
-      tense: RiTa.PRESENT_TENSE,
-      number: RiTa.SINGULAR,
-      person: RiTa.THIRD_PERSON
-    };
-    // conjVbz = RiTa.conjugate(verbs[2],args)
-    conjVbz.push(RiTa.conjugate(verbs[i],args));
-    vbz = contentVbz.concat(conjVbz);
+      var args = {
+        tense: RiTa.PRESENT_TENSE,
+        number: RiTa.SINGULAR,
+        person: RiTa.THIRD_PERSON
+      };
+      // conjVbz = RiTa.conjugate(verbs[2],args)
+      conjVbz.push(RiTa.conjugate(verbs[i],args));
+      vbz = contentVbz.concat(conjVbz);
+    }
   }
-
+  doPos = false;
+}
   // delDs = vbd[i].replace(/d\b/gmi, '');
-
+//.remove
+//elmt.html('')
+//elmt.remove();
   createP('This could be a '+ adjs[int(random(adjs.length))]+ ' ' +
     nouns[int(random(nouns.length))]+' that '+
     verbs[int(random(verbs.length))]);

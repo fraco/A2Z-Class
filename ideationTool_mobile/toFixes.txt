@@ -1,0 +1,8 @@
+to fix
+
+✓-unloop pos analysis with submit
+-verb conversion
+-object.description correlated contentTokens
+-include silent e’s
+-other filtering suggestions for 3rd person, singular, present
+-clear paragraph element when keyIsReleased
