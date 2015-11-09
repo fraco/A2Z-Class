@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>ECOncordance</title>
+    <script src="libraries/p5.js" type="text/javascript"></script>
+
+    <script src="libraries/p5.dom.js" type="text/javascript"></script>
+    <script src="libraries/p5.sound.js" type="text/javascript"></script>
+    <script src="libraries/rita-full.js" type="text/javascript"></script>
+
+    <script src="sketch.js" type="text/javascript"></script>
+    <script src="cf.js" type="text/javascript"></script>
+    <script src="concordance.js" type="text/javascript"></script>
+
+    <style>
+      body {
+        padding: 20px;
+      }
+
+      .file {
+        margin-top: 24px;
+        font-weight: bold;
+      }
+
+      .text {
+        border-style: solid;
+        border-width: 1px;
+        padding: 20px;
+      }
+
+      #grammar {
+        display: none;
+      }
+
+    </style>
+
+  </head>
+  <body>
+
+    <h1>Context-Free Grammar with Ecomodernist Manifesto</h1>
+
+    <p>Context-Free Grammar from the Ecomodernist Manifesto by Stewart Brand.  Selecting "generate grammar" will sort all the words from the source text by syllable and load them into a haiku grammar. Download the grammar as a JSON file or generate new haikus right on this page.</p>
+
+    <p>
+      <a href="#" id ="sample">use text sample</a>
+    </p>
+
+      <textarea id = "textinput" rows="10" cols="100">Enter some text</textarea><br/>
+      <button id = "submit">generate grammar</button>
+      <div id="grammar">
+      <button id = "haiku">generate haiku</button>
+      <button id = "clear">clear</button>
+      <button id = "download">save JSON file</button>
+      </div>
+    </p>
+
+  </body>
+</html>
