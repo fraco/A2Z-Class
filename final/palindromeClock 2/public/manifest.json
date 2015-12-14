@@ -1,0 +1,19 @@
+{
+  "manifest_version": 2,
+  "name": "New Tab PaclolcaP",
+  "description": "A clock to celebrate palindrome hours in new tabs.",
+  "version": "1.0",
+  "background": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": ["jquery-2.1.4.js", "content.js"]
+    }
+  ],
+  "chrome_url_overrides": {
+    "newtab": "newtab.html"
+  }
+}
+
+
